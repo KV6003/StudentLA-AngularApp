@@ -1,0 +1,219 @@
+<h1 class="title mainTitle">Grades Calculator</h1>
+<div class="align-center">
+  <button class="infoButton" (click)="toggleInfo()">{{ showInfo == true ? 'Hide info:' : 'Show info:' }} &nbsp;<i class="fas fa-info infoIcon"></i></button>
+  <div class="info">
+    <div *ngIf="showInfo">
+      <h3>Adding assessments inside a module:</h3>
+      <p>Here 2 assessments are being added into a module using the big green "+ Add Assessment" button. The module name is "Programming" and the <br>
+      first assessment is "Assessment 1" while the Second assessment is called "Assessment 2". Both assessments weigh the same therefore the weight <br>
+      field for both assessments is 50% while the grade fields (the marks in %) differ.</p>
+      <img src="../../assets/add_assess.gif" width="80%"/><br><br>
+      <h3>Adding a new module:</h3>
+      <p>Here another module is being added using the smaller green "+ Add Module" button. When a module is added, An empty assessment is<br>
+      created Automatically. This needs to be filled in. In the below example, the grade/mark for the assessment is not provided. If this field is left <br>
+      empty it will be calculated when the report is generated.</p>
+      <img src="../../assets/add_mods.gif" width="80%"/><br><br>
+      <h3>Viewing and editing results:</h3>
+      <p>Once all modules for the academic year have been added, the report can be generated. Any grade fields left blank for assessments not yet completed,<br>
+      will be calculated in the report. The calculated grades will be even spread therefore if cultiple grades were left blank, their calculated grades will<br>
+      be the same. You can now edit the grades of the assessments to see how it effects the calculates grades for the other assessments.
+      </p>
+      <img src="../../assets/results.gif" width="80%"/>
+      <!--p>This calculator will calculate the grades you need to achieve a target.<br/><br/>
+      You provide the year of your course and the target grade you want to achieve. Then using the modules and <br/>
+      assessment you provide, the grades for assessments you have yet to complete are calculated based on your <br/>
+      target grade that you want to achieve.<br/><br/>
+      You must add ALL modules and assessments for the complete academic year using the green "+ Add Assessment" <br/>
+      and "+ Add Module" buttons. Clicking either button will add a new module, or an assessment within a module. <br/><br/>
+      For each assessment, you MUST provide its weight within the module. You can optionally provide the grade <br/>
+      you achieved in that assessment. Both fields cannot be greater than 100%. If the optional grade field is left black, <br/>
+      it will be calculated based on the target grade you have provided. The grades for multiple assessments can be left <br/>
+      blank and they will all be calculated. The grades calculated is the minimum grades you will need to achieve to <br/>
+      reach your target grade.<br/><br/>
+      If you feel the calculated graade is higher or lower then what you can expect to achieve, you can edit the calculated <br/>
+      grade and recalculate the other missing grades again.
+      </p-->
+    </div>
+  </div>
+</div>
+<div class="formContainer">
+  <form [formGroup]="gradesCalculatorForm" (ngSubmit)="onSubmit()">
+    <div class="form-group row">
+      <label for="course" class="col-4 col-form-label"><h1 class="title">Course</h1></label> 
+      <div class="col-8">
+        <div class="input-group">
+          <div class="input-group-prepend">
+            <div class="input-group-text">
+              <i class="fa fa-graduation-cap"></i>
+            </div>
+          </div>
+          <input id="course" name="course" formControlName="courseName" placeholder="ex. Computer Science" type="text" class="form-control"> 
+        </div>
+      </div>
+    </div>
+    <div class="form-group row">
+      <label for="year" class="col-4"><h2 class="title">Year</h2></label>
+      <div class="col-8">
+        <div class="custom-control custom-radio custom-control-inline">
+          <input name="year" id="year_0" formControlName="year" type="radio" class="custom-control-input" value="firstYear" (change)="hideDessertation()" required="required"> 
+          <label for="year_0" class="custom-control-label">1st</label>
+        </div>
+        <div class="custom-control custom-radio custom-control-inline">
+          <input name="year" id="year_1" formControlName="year" type="radio" class="custom-control-input" value="secondYear" (change)="hideDessertation()" required="required"> 
+          <label for="year_1" class="custom-control-label">2nd</label>
+        </div>
+        <div class="custom-control custom-radio custom-control-inline">
+          <input name="year" id="year_2" formControlName="year" type="radio" class="custom-control-input" value="finalYear" (change)="displayDessertation()" required="required"> 
+          <label for="year_2" class="custom-control-label">Final</label>
+        </div>
+      </div>
+    </div>
+    <div class="form-group row">
+      <label for="targetGrade" class="col-4"><h2 class="title">Target Grade</h2></label> 
+      <div class="col-8">
+        <div class="custom-control custom-radio custom-control-inline">
+          <input name="targetGrade" id="targetGrade_0" formControlName="targetGrade" type="radio" (change)="showCustomTarget()" required="required" class="custom-control-input" value="custom"> 
+          <label for="targetGrade_0" class="custom-control-label">Custom</label>
+        </div>
+        <div class="custom-control custom-radio custom-control-inline">
+          <input name="targetGrade" id="targetGrade_1" formControlName="targetGrade" type="radio" (change)="hideCustomTarget()" required="required" class="custom-control-input" value="first"> 
+          <label for="targetGrade_1" class="custom-control-label">1st</label>
+        </div>
+        <div class="custom-control custom-radio custom-control-inline">
+          <input name="targetGrade" id="targetGrade_2" formControlName="targetGrade" type="radio" (change)="hideCustomTarget()" required="required" class="custom-control-input" value="twoOne"> 
+          <label for="targetGrade_2" class="custom-control-label">2:1</label>
+        </div>
+        <div class="custom-control custom-radio custom-control-inline">
+          <input name="targetGrade" id="targetGrade_3" formControlName="targetGrade" type="radio" (change)="hideCustomTarget()" required="required" class="custom-control-input" value="twoTwo"> 
+          <label for="targetGrade_3" class="custom-control-label">2:2</label>
+        </div>
+        <div class="custom-control custom-radio custom-control-inline">
+          <input name="targetGrade" id="targetGrade_4" formControlName="targetGrade" type="radio" (change)="hideCustomTarget()" required="required" class="custom-control-input" value="third"> 
+          <label for="targetGrade_4" class="custom-control-label">3</label>
+        </div>
+      </div>
+    </div>
+    <p *ngIf="displayCustomTarget && !targetValid"><em><span style="color:red;">*</span> Target grade muct be a value 40 or above, upto 100</em></p>
+    <div *ngIf="displayCustomTarget" class="form-group row">
+      <label for="customTarget" class="col-4 col-form-label"><h2 class="title">Custom Target</h2></label> 
+      <div class="col-8">
+        <div class="input-group">
+          <div class="input-group-prepend">
+            <div class="input-group-text">
+              <i class="fas fa-bullseye"></i>
+            </div>
+          </div>
+          <input id="course" name="course" formControlName="customTarget" placeholder="ex. 85" type="number" class="form-control" required="required">
+          <div class="input-group-append">
+            <div class="input-group-text">%</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- <p *ngIf="gradesCalculatorForm.invalid"><em><span style="color:red;">*</span> All fields of this form must be populated with valid values</em></p> -->
+    <p *ngIf="!weightsBalanced"><em><span style="color:red;">*</span> The combined weights for all assignments within each modules must add upto 100%</em></p>
+    <!-- ~~~~~~~~~~~ M O D U L E ~~~~~~~~~~~ -->
+    <div formArrayName="modules" *ngFor="let module of getFormModules.controls; let i = index">
+      <div class="card base-grey" [formGroupName]="i" style="margin-top: 1em;">
+        <div class="form-group row gap-full">
+          <label for="module" class="col-2 col-form-label subtitle">Module</label> 
+          <div class="col-8">
+            <div class="input-group">
+              <div class="input-group-prepend">
+                <div class="input-group-text">
+                  <i class="fa fa-folder-open"></i>
+                </div>
+              </div> 
+              <input id="module" name="module" formControlName="moduleName" placeholder="ex. Programming" type="text" class="form-control" required="required">
+            </div>
+          </div>
+        </div>
+        <div *ngIf="finalYear && !anyDessChecked? true: valArr[i].d" class="form-group row gap-full">
+            <label for="dissertation" class="col-4 col-form-label">Dissertation</label> 
+            <div class="col-8">
+                <div class="input-group">
+                    <div class="custom-control custom-checkbox custom-control-inline">
+                        <input id="dissertation_{{i}}" name="dissertation" formControlName="dess" type="checkbox" class="custom-control-input" value="true" (change)="toggleAnyDessChecked()" aria-describedby="HelpBlock"> 
+                        <label for="dissertation_{{i}}" class="custom-control-label">Yes</label>
+                    </div>
+                    <span id="HelpBlock" class="form-text text-muted">Is this module is your final year dissertation?</span>
+                </div>
+            </div>
+        </div>
+        <p *ngIf="valArr[i].wUB !== 100 && valArr[i].wUB !== null" style="margin-left: 2em;"><span style="color:red;font-weight:bold;">*</span> <span [ngClass]="valArr[i].wUB < 100 ? '' : 'weightsUnbalancedErr'">{{valArr[i].wUB < 100 ? 'You might just not be done yet but please make sure that the weights of all assessments in this module add to 100%.' : 'The weights of all assessments in this module must add to 100%. Currently they add to greater then 100%.'}}</span></p>
+        <!-- Assessment -->
+        <div formArrayName="assessments" *ngFor="let assessment of getAssessments(i).controls; let j = index">
+          <div class="section" [formGroupName]="j" >
+            <div class="form-group row gap-full">
+              <label for="assess" class="col-2 col-form-label">Assessment</label>
+              <div class="col-8">
+                <div class="input-group">
+                  <div class="input-group-prepend">
+                    <div class="input-group-text">
+                      <i class="fa fa-pencil"></i>
+                    </div>
+                  </div>
+                  <input id="assess" name="assess" formControlName="assess" placeholder="ex. Java Exam" type="text" class="form-control" required="required">
+                </div>
+              </div>
+            </div>
+            <div class="form-group row gap-full">
+              <label for="grade" class="col-2 col-form-label">Grading</label>
+              <div class="col-10">
+                <div class="input-group"> <!-- Grade % Weight -->
+                  <div class="input-group-prepend">
+                    <div class="input-group-text">
+                      Grade &nbsp;<i class="fas fa-chart-bar"></i>
+                    </div>
+                  </div>
+                  <input id="grade" name="grade" formControlName="grade" placeholder="ex. 75" type="number" class="form-control">
+                  <div class="input-group-append">
+                    <div class="input-group-text">%</div>
+                  </div>
+                  
+                  <div class="input-group-prepend" style="margin-left: 1em;">
+                    <div class="input-group-text">Weight &nbsp;<i class="fa fa-balance-scale"></i></div>
+                  </div>
+                  <input id="weight" name="weight" formControlName="weight" placeholder="ex. 75" type="number" class="form-control" required="required">
+                  <div class="input-group-append">
+                    <div class="input-group-text">%</div>
+                  </div>
+                </div> <!-- --------------------------------- -->
+                <span id="gradeHelpBlock" class="form-text text-muted">If grade not yet received, leave the Grade field empty</span>
+                <span *ngIf="valArr[i].a[j].g" id="gradeHelpBlock" class="form-text" style="color:red;">* The "Grade" field must have a value between 0 and 100</span>
+                <span *ngIf="valArr[i].a[j].w" id="gradeHelpBlock" class="form-text" style="color:red;">* The "Weight" field must have a value between 0 and 100</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- Assessment -->
+        <button type="button" class="btn btn-outline-success add" style="margin: 1em;" (click)="addAssessment(i)">
+          <i class="fa fa-plus" aria-hidden="true"></i> Add Assessment
+        </button>
+      </div>
+    </div>
+    <!-- ~~~~~~~~~~~ M O D U L E ~~~~~~~~~~~ -->
+    <button type="button" class="btn btn-outline-success" style="margin: 1em; float: left;" (click)="addModule()">
+      <i class="fa fa-plus" aria-hidden="true"></i> Add Module
+    </button>
+    <button name="submit" type="submit" class="btn btn-primary" style="margin: 1em; float: right;" [disabled]="verifyForm()">
+      <i class="fa fa-bar-chart"></i> Generate Report
+    </button>
+    <button type="button" class="btn btn-outline-primary" style="margin: 1em; float: right;" (click)="onLoadData()">
+      Load Data
+    </button>
+    <button type="button" class="btn btn-outline-success" style="margin: 1em; float: right;" (click)="onSaveData()">
+      Save Data
+    </button>
+    <button type="button" class="btn btn-outline-danger" style="margin: 1em; float: right;" (click)="newForm()">
+      Reset
+    </button>
+  </form>
+</div>
+<div class="spacer"></div>
+
+<table border="1" style="clear: both; margin: auto;">
+  <tr>
+    <td>{{ gradesCalculatorForm.value | json }}</td>
+  </tr>
+</table>

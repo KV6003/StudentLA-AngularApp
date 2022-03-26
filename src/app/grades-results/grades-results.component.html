@@ -1,0 +1,53 @@
+<div *ngIf="status !== -1; else noData" class="adjustTop">
+    <div class="adjustCenter">
+        <h1>{{gradesData[0].courseName}} ({{year}})</h1>
+        <h2>Target grade: {{targetGrade}}%</h2>
+    </div>
+    <div class="modulesContainer">
+        <div class="module" *ngFor="let module of gradesData[0].modules; let i = index">
+            <h2 class="mName">Module: {{module.moduleName}}</h2>
+            <h3>Assessments</h3>
+            <div class="assess" *ngFor="let assessment of module.assessments; let j = index">
+                <div *ngIf="markArr[i].assess[j].edited && markArr[i].assess[j].calRequired; else display">
+                    <p>
+                        <strong>{{assessment.assess}}:</strong> <input type="number" [(ngModel)]="gradesData[0].modules[i].assessments[j].grade" (ngModelChange)="gradesData[0].modules[i].assessments[j].grade = $event"> &nbsp;
+                        <button (click)="saveResults(i, j)">save</button>
+                        <button (click)="cancelEdit(i, j)">cancel</button>
+                    </p>
+                </div>
+                <ng-template #display>
+                    <div *ngIf="markArr[i].assess[j].calRequired">
+                        <p>
+                            <strong>{{assessment.assess}}:</strong> {{assessment.grade}}% &nbsp;
+                            <span class="required">Calculated</span> &nbsp;
+                            <button (click)="editResult(i, j)">Edit</button>
+                        </p>
+                    </div>
+                    <div *ngIf="!markArr[i].assess[j].calRequired && !markArr[i].assess[j].edited">
+                        <p>
+                            <strong>{{assessment.assess}}:</strong> {{assessment.grade}}% &nbsp;
+                            <span class="success">Achieved</span>
+                        </p>
+                    </div>
+                    <div *ngIf="!markArr[i].assess[j].calRequired && markArr[i].assess[j].edited">
+                        <p>
+                            <strong>{{assessment.assess}}:</strong> {{assessment.grade}}% &nbsp;
+                            <span class="edited">Edited</span>
+                            <button (click)="editResult(i, j)">Edit</button>
+                        </p>
+                    </div>
+                </ng-template>
+                <!-- <p>
+                    <strong>{{assessment.assess}}:</strong> {{assessment.grade}}% &nbsp;
+                    <span class="success">Achieved</span>
+                    <span class="required">Calculated</span>
+                </p> -->
+            </div>
+        </div>
+    </div>
+</div>
+<ng-template #noData>
+    <div class="noData">
+        <h1>No Data!</h1>
+    </div>
+</ng-template>

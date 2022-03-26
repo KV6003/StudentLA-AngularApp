@@ -1,0 +1,16 @@
+<div class="header" role="banner">
+  <span class="title" routerLink="">Student L-A</span>
+  <nav>
+    <ul>
+      <li><a routerLink="/">Dashboard</a></li>
+      <li><a routerLink="/">Link2</a></li>
+      <li><a routerLink="/">Link3</a></li>
+      <li><a routerLinkActive="active" routerLink="gradesCalculator">Grades Calculator App</a></li>
+    </ul>
+  </nav>
+  <button *ngIf="chechLoggedIn(); else login" (click)="logout()" class="loginButton">Log Out</button>
+  <ng-template #login>
+    <button routerLink="login" class="loginButton">Log In</button>
+  </ng-template>
+</div>
+<router-outlet></router-outlet>

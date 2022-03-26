@@ -1,0 +1,61 @@
+.adjustCenter {
+    text-align: center;
+}
+
+.adjustTop {
+    margin-top: 5em;
+}
+
+.modulesContainer {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.module {
+    width: 30em;
+    height: auto;
+    padding: 1em;
+    border-radius: 1em;
+    margin: 1em;
+    background: #eeeeee;
+}
+
+.assess {
+    width: 100%;
+    height: auto;
+}
+
+.success {
+    color: #1bcc1b;
+    font-weight: bold;
+}
+
+.edited {
+    color: #ccc01b;
+    font-weight: bold;
+}
+
+.required {
+    color: #cc1b1b;
+    font-weight: bold;
+}
+
+.noData {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    margin-top: -2em;
+    margin-left: -7em;
+    width: 14em;
+    height: 2.2em;
+    text-align: center;
+}
+
+.noData h1 {
+    font-size: 3em;
+}
+
+.redStar {
+    color: red;
+}
